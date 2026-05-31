@@ -1,0 +1,34 @@
+.form { width: 100%; }
+
+.title {
+  font-size: clamp(1.3rem, 2.5vw, 1.7rem);
+  font-weight: 800;
+  color: var(--white);
+  margin-bottom: 6px;
+}
+
+.subtitle {
+  font-size: .9rem;
+  color: var(--gray);
+  margin-bottom: 32px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-bottom: 32px;
+}
+
+.fullWidth { grid-column: 1 / -1; }
+
+.actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+
+@media (max-width: 600px) {
+  .grid { grid-template-columns: 1fr; }
+}

@@ -1,0 +1,109 @@
+.wrapper { width: 100%; }
+
+.title {
+  font-size: clamp(1.3rem, 2.5vw, 1.7rem);
+  font-weight: 800;
+  color: var(--white);
+  margin-bottom: 6px;
+}
+
+.subtitle {
+  font-size: .9rem;
+  color: var(--gray);
+  margin-bottom: 32px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+@media (max-width: 768px) {
+  .grid { grid-template-columns: 1fr; }
+}
+
+.card {
+  background: rgba(13,32,68,.5);
+  border: 1.5px solid rgba(0,180,216,.12);
+  border-radius: var(--r-lg);
+  padding: 28px 24px;
+  text-align: left;
+  cursor: pointer;
+  font-family: inherit;
+  color: inherit;
+  transition: all .25s;
+  position: relative;
+}
+
+.card:hover { border-color: rgba(0,180,216,.35); }
+
+.card.selected {
+  border-color: var(--teal);
+  background: rgba(0,180,216,.08);
+  box-shadow: var(--shadow-teal);
+}
+
+.card.recommended {
+  border-color: rgba(0,180,216,.3);
+}
+
+.badge {
+  position: absolute;
+  top: -13px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(90deg, var(--teal), #0077b6);
+  color: #fff;
+  font-size: .72rem;
+  font-weight: 700;
+  padding: 4px 16px;
+  border-radius: 100px;
+  white-space: nowrap;
+}
+
+.planName {
+  font-size: .75rem;
+  font-weight: 700;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  color: var(--teal);
+  margin-bottom: 6px;
+}
+
+.planDesc {
+  font-size: .84rem;
+  color: var(--gray);
+  margin-bottom: 16px;
+  line-height: 1.5;
+}
+
+.price { margin-bottom: 20px; }
+.currency { font-size: .9rem; color: var(--gray); vertical-align: top; margin-top: 4px; display: inline-block; }
+.amount { font-size: 2.4rem; font-weight: 800; color: var(--white); line-height: 1; }
+.period { font-size: .82rem; color: var(--gray); }
+
+.features { list-style: none; }
+.features li {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: .84rem;
+  color: var(--gray);
+  padding: 5px 0;
+  border-bottom: 1px solid rgba(255,255,255,.04);
+}
+
+.check {
+  color: var(--teal);
+  font-size: .75rem;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
