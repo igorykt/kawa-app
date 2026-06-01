@@ -17,11 +17,18 @@ function readPlanFromUrl(): Plan | null {
   return VALID_PLANS.includes(param as Plan) ? (param as Plan) : null
 }
 
+function readTypeFromUrl(): ClientType | null {
+  const param = new URLSearchParams(window.location.search).get('type')
+  return param === 'new' ? 'new' : param === 'migration' ? 'migration' : null
+}
+
 function buildInitialState(): RegistrationState {
   const planFromUrl = readPlanFromUrl()
+  const typeFromUrl = readTypeFromUrl()
+  const clientType = typeFromUrl ?? (planFromUrl ? 'new' : null)
   return {
-    step: 'type-selector',
-    clientType: null,
+    step: clientType ? 'contact' : 'type-selector',
+    clientType,
     contact: null,
     businessNew: null,
     address: null,
