@@ -1,4 +1,14 @@
 import { useForm } from 'react-hook-form'
+
+function isValidCpf(raw: string): boolean {
+  const cpf = raw.replace(/\D/g, '')
+  if (cpf.length !== 11 || /^(\d)\1{10}$/.test(cpf)) return false
+  const calc = (len: number) => {
+    const rem = (Array.from({ length: len }, (_, i) => Number(cpf[i]) * (len + 1 - i)).reduce((a, b) => a + b, 0) * 10) % 11
+    return rem >= 10 ? 0 : rem
+  }
+  return calc(9) === Number(cpf[9]) && calc(10) === Number(cpf[10])
+}
 import { Input } from '../../../components/ui/Input'
 import { Button } from '../../../components/ui/Button'
 import type { RegistrationState } from '../../../types/registration'
@@ -30,7 +40,8 @@ export function StepContact({ defaultValues, onSubmit, onBack }: Props) {
             error={errors.name?.message}
             {...register('name', {
               required: 'Nome obrigatório.',
-              minLength: { value: 3, message: 'Mínimo 3 caracteres.' },
+              setValueAs: (v: string) => v.trim(),
+              validate: v => v.trim().length >= 3 || 'Mínimo 3 caracteres.',
             })}
           />
         </div>
@@ -42,6 +53,7 @@ export function StepContact({ defaultValues, onSubmit, onBack }: Props) {
           error={errors.email?.message}
           {...register('email', {
             required: 'E-mail obrigatório.',
+            setValueAs: (v: string) => v.trim(),
             pattern: { value: /^[^@\s]+@[^@\s]+\.[^@\s]+$/, message: 'E-mail inválido.' },
           })}
         />
@@ -64,7 +76,7 @@ export function StepContact({ defaultValues, onSubmit, onBack }: Props) {
           {...register('cpf', {
             required: 'CPF obrigatório.',
             setValueAs: (v: string) => v.replace(/\D/g, ''),
-            validate: (v) => v.length === 11 || 'CPF deve ter 11 dígitos.',
+            validate: (v) => isValidCpf(v) || 'CPF inválido.',
           })}
         />
       </div>

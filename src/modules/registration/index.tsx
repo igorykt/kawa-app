@@ -44,7 +44,8 @@ export function RegistrationPage() {
           {state.step === 'business-new' && (
             <StepBusinessNew
               defaultValues={state.businessNew}
-              onSubmit={reg.saveBusinessNew}
+              defaultPlan={state.selectedPlan}
+              onSubmit={(data, plan) => reg.saveBusinessNew(data, plan)}
               onBack={() => reg.goTo('contact')}
             />
           )}
@@ -59,7 +60,6 @@ export function RegistrationPage() {
 
           {state.step === 'plan' && (
             <StepPlan
-              clientType={state.clientType}
               defaultPlan={state.selectedPlan}
               onSubmit={reg.savePlan}
               onBack={() =>

@@ -45,7 +45,11 @@ export function StepBusinessMigration({ defaultValues, onSubmit, onBack }: Props
           label="Razão social"
           placeholder="Nome da empresa conforme CNPJ"
           error={errors.companyName?.message}
-          {...register('companyName', { required: 'Razão social obrigatória.' })}
+          {...register('companyName', {
+            required: 'Razão social obrigatória.',
+            setValueAs: (v: string) => v.trim(),
+            validate: v => v.trim().length > 0 || 'Razão social obrigatória.',
+          })}
         />
 
         <Select
@@ -59,7 +63,11 @@ export function StepBusinessMigration({ defaultValues, onSubmit, onBack }: Props
           label="Contador ou escritório atual"
           placeholder="Nome do contador ou escritório"
           error={errors.currentAccountant?.message}
-          {...register('currentAccountant', { required: 'Campo obrigatório.' })}
+          {...register('currentAccountant', {
+            required: 'Campo obrigatório.',
+            setValueAs: (v: string) => v.trim(),
+            validate: v => v.trim().length > 0 || 'Campo obrigatório.',
+          })}
         />
 
         <Input

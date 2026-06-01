@@ -47,11 +47,12 @@ export function useRegistration() {
     }))
   }
 
-  const saveBusinessNew = (businessNew: RegistrationState['businessNew']) => {
+  const saveBusinessNew = (businessNew: RegistrationState['businessNew'], selectedPlan: Plan) => {
     setState(s => ({
       ...s,
       businessNew,
-      step: s.selectedPlan ? 'review' : 'plan',
+      selectedPlan,
+      step: 'review',
     }))
   }
 

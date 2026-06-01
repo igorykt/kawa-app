@@ -1,10 +1,17 @@
 import styles from './ProgressBar.module.css'
 import type { Step } from '../../../types/registration'
 
-const STEPS: { key: Step; label: string }[] = [
+const STEPS_NEW: { key: Step; label: string }[] = [
   { key: 'type-selector', label: 'Perfil' },
   { key: 'contact', label: 'Contato' },
-  { key: 'business-new', label: 'Empresa' },
+  { key: 'business-new', label: 'Empresa & Plano' },
+  { key: 'review', label: 'Revisão' },
+]
+
+const STEPS_MIGRATION: { key: Step; label: string }[] = [
+  { key: 'type-selector', label: 'Perfil' },
+  { key: 'contact', label: 'Contato' },
+  { key: 'business-migration', label: 'Empresa' },
   { key: 'plan', label: 'Plano' },
   { key: 'review', label: 'Revisão' },
 ]
@@ -27,12 +34,7 @@ interface ProgressBarProps {
 export function ProgressBar({ currentStep, clientType }: ProgressBarProps) {
   if (currentStep === 'success') return null
 
-  const steps = STEPS.map(s => {
-    const label =
-      s.key === 'business-new' && clientType === 'migration' ? 'Empresa' : s.label
-    return { ...s, label }
-  })
-
+  const steps = clientType === 'migration' ? STEPS_MIGRATION : STEPS_NEW
   const currentIndex = STEP_ORDER.indexOf(currentStep)
   const getStepIndex = (key: Step) => STEP_ORDER.indexOf(key)
 
