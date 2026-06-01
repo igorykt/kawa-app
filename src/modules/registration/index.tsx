@@ -3,6 +3,7 @@ import { ProgressBar } from './components/ProgressBar'
 import { StepTypeSelector } from './components/StepTypeSelector'
 import { StepContact } from './components/StepContact'
 import { StepBusinessNew } from './components/StepBusinessNew'
+import { StepAddress } from './components/StepAddress'
 import { StepBusinessMigration } from './components/StepBusinessMigration'
 import { StepPlan } from './components/StepPlan'
 import { StepReview } from './components/StepReview'
@@ -16,7 +17,7 @@ export function RegistrationPage() {
   return (
     <div className={styles.page}>
       <header className={styles.header}>
-        <a href="/" className={styles.logo}>
+        <a href={import.meta.env.VITE_SITE_URL ?? 'http://localhost:5500'} className={styles.logo}>
           <span className={styles.kanji}>川</span>
           <div>
             <span className={styles.name}>Kawa</span>
@@ -47,6 +48,14 @@ export function RegistrationPage() {
               defaultPlan={state.selectedPlan}
               onSubmit={(data, plan) => reg.saveBusinessNew(data, plan)}
               onBack={() => reg.goTo('contact')}
+            />
+          )}
+
+          {state.step === 'address' && (
+            <StepAddress
+              defaultValues={state.address}
+              onSubmit={reg.saveAddress}
+              onBack={() => reg.goTo('business-new')}
             />
           )}
 

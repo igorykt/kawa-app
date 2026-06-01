@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { Input } from '../../../components/ui/Input'
-import { Select } from '../../../components/ui/Select'
 import { Button } from '../../../components/ui/Button'
 import { usePlans } from '../../../hooks/usePlans'
 import type { PlanConfig } from '../../../services/planService'
@@ -10,12 +9,6 @@ import styles from './StepForm.module.css'
 import typeStyles from './StepBusinessNew.module.css'
 
 type BusinessNewData = NonNullable<RegistrationState['businessNew']>
-
-const STATES = [
-  'AC','AL','AP','AM','BA','CE','DF','ES','GO','MA','MT','MS',
-  'MG','PA','PB','PR','PE','PI','RJ','RN','RS','RO','RR','SC',
-  'SP','SE','TO',
-].map(s => ({ value: s, label: s }))
 
 const PLAN_TO_BUSINESS_TYPE: Record<string, BusinessType> = {
   MEI: 'MEI',
@@ -39,7 +32,6 @@ export function StepBusinessNew({ defaultValues, defaultPlan, onSubmit, onBack }
     defaultValues: defaultValues ?? undefined,
   })
 
-  // Pre-select when plans load
   const handleSelect = (plan: PlanConfig) => {
     setSelected(plan)
     setTypeError(false)
@@ -153,22 +145,6 @@ export function StepBusinessNew({ defaultValues, defaultPlan, onSubmit, onBack }
             })}
           />
         </div>
-        <Input
-          label="Cidade"
-          placeholder="Ex.: São Paulo"
-          error={errors.city?.message}
-          {...register('city', {
-            required: 'Cidade obrigatória.',
-            setValueAs: (v: string) => v.trim(),
-            validate: v => v.trim().length > 0 || 'Cidade obrigatória.',
-          })}
-        />
-        <Select
-          label="Estado"
-          options={STATES}
-          error={errors.state?.message}
-          {...register('state', { required: 'Estado obrigatório.' })}
-        />
       </div>
 
       <div className={styles.actions}>

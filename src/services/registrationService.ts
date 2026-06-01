@@ -8,6 +8,7 @@ export const registrationService = {
     api.post('/clients/new', {
       ...data,
       desiredBusinessType: businessTypeToInt(data.desiredBusinessType),
+      cep: data.cep.replace(/\D/g, ''),
     }),
 
   registerMigration: (data: MigrationClientFormData) =>

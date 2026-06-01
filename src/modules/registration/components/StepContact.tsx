@@ -1,4 +1,10 @@
 import { useForm } from 'react-hook-form'
+import { Input } from '../../../components/ui/Input'
+import { Button } from '../../../components/ui/Button'
+import type { RegistrationState } from '../../../types/registration'
+import styles from './StepForm.module.css'
+
+type ContactData = NonNullable<RegistrationState['contact']>
 
 function isValidCpf(raw: string): boolean {
   const cpf = raw.replace(/\D/g, '')
@@ -9,12 +15,32 @@ function isValidCpf(raw: string): boolean {
   }
   return calc(9) === Number(cpf[9]) && calc(10) === Number(cpf[10])
 }
-import { Input } from '../../../components/ui/Input'
-import { Button } from '../../../components/ui/Button'
-import type { RegistrationState } from '../../../types/registration'
-import styles from './StepForm.module.css'
 
-type ContactData = NonNullable<RegistrationState['contact']>
+function maskPhone(raw: string) {
+  const d = raw.replace(/\D/g, '').slice(0, 11)
+  if (d.length <= 2) return d.length ? `(${d}` : ''
+  if (d.length <= 6) return `(${d.slice(0, 2)}) ${d.slice(2)}`
+  if (d.length <= 10) return `(${d.slice(0, 2)}) ${d.slice(2, 6)}-${d.slice(6)}`
+  return `(${d.slice(0, 2)}) ${d.slice(2, 7)}-${d.slice(7)}`
+}
+
+function maskCpf(raw: string) {
+  const d = raw.replace(/\D/g, '').slice(0, 11)
+  if (d.length <= 3) return d
+  if (d.length <= 6) return `${d.slice(0, 3)}.${d.slice(3)}`
+  if (d.length <= 9) return `${d.slice(0, 3)}.${d.slice(3, 6)}.${d.slice(6)}`
+  return `${d.slice(0, 3)}.${d.slice(3, 6)}.${d.slice(6, 9)}-${d.slice(9)}`
+}
+
+function formatDefaultPhone(v?: string) {
+  if (!v) return ''
+  return maskPhone(v)
+}
+
+function formatDefaultCpf(v?: string) {
+  if (!v) return ''
+  return maskCpf(v)
+}
 
 interface Props {
   defaultValues?: ContactData | null
@@ -24,7 +50,25 @@ interface Props {
 
 export function StepContact({ defaultValues, onSubmit, onBack }: Props) {
   const { register, handleSubmit, formState: { errors } } = useForm<ContactData>({
-    defaultValues: defaultValues ?? undefined,
+    defaultValues: defaultValues
+      ? {
+          ...defaultValues,
+          phone: formatDefaultPhone(defaultValues.phone),
+          cpf: formatDefaultCpf(defaultValues.cpf),
+        }
+      : undefined,
+  })
+
+  const phoneReg = register('phone', {
+    required: 'Telefone obrigatório.',
+    setValueAs: (v: string) => v.replace(/\D/g, ''),
+    validate: v => (v.length >= 10 && v.length <= 11) || 'Telefone inválido.',
+  })
+
+  const cpfReg = register('cpf', {
+    required: 'CPF obrigatório.',
+    setValueAs: (v: string) => v.replace(/\D/g, ''),
+    validate: v => isValidCpf(v) || 'CPF inválido.',
   })
 
   return (
@@ -61,23 +105,25 @@ export function StepContact({ defaultValues, onSubmit, onBack }: Props) {
         <Input
           label="Telefone / WhatsApp"
           placeholder="(11) 99999-9999"
+          maxLength={15}
           error={errors.phone?.message}
-          {...register('phone', {
-            required: 'Telefone obrigatório.',
-            setValueAs: (v: string) => v.replace(/\D/g, ''),
-            validate: (v) => (v.length >= 10 && v.length <= 11) || 'Telefone inválido.',
-          })}
+          {...phoneReg}
+          onChange={e => {
+            e.target.value = maskPhone(e.target.value)
+            phoneReg.onChange(e)
+          }}
         />
 
         <Input
           label="CPF"
           placeholder="000.000.000-00"
+          maxLength={14}
           error={errors.cpf?.message}
-          {...register('cpf', {
-            required: 'CPF obrigatório.',
-            setValueAs: (v: string) => v.replace(/\D/g, ''),
-            validate: (v) => isValidCpf(v) || 'CPF inválido.',
-          })}
+          {...cpfReg}
+          onChange={e => {
+            e.target.value = maskCpf(e.target.value)
+            cpfReg.onChange(e)
+          }}
         />
       </div>
 

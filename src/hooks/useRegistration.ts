@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import type {
+  AddressData,
   ClientType,
   MigrationClientFormData,
   NewClientFormData,
@@ -23,6 +24,7 @@ function buildInitialState(): RegistrationState {
     clientType: null,
     contact: null,
     businessNew: null,
+    address: null,
     businessMigration: null,
     selectedPlan: planFromUrl,
   }
@@ -52,8 +54,12 @@ export function useRegistration() {
       ...s,
       businessNew,
       selectedPlan,
-      step: 'review',
+      step: 'address',
     }))
+  }
+
+  const saveAddress = (address: AddressData) => {
+    setState(s => ({ ...s, address, step: 'review' }))
   }
 
   const saveBusinessMigration = (businessMigration: RegistrationState['businessMigration']) => {
@@ -75,10 +81,11 @@ export function useRegistration() {
     setSubmitError(null)
 
     try {
-      if (state.clientType === 'new' && state.businessNew) {
+      if (state.clientType === 'new' && state.businessNew && state.address) {
         const payload: NewClientFormData = {
           ...state.contact,
           ...state.businessNew,
+          ...state.address,
           selectedPlan: state.selectedPlan,
         }
         await registrationService.registerNew(payload)
@@ -113,6 +120,7 @@ export function useRegistration() {
     selectType,
     saveContact,
     saveBusinessNew,
+    saveAddress,
     saveBusinessMigration,
     savePlan,
     submit,

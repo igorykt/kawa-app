@@ -1,0 +1,19 @@
+.cepWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.cepHint {
+  font-size: .75rem;
+  color: var(--gray);
+  min-height: 1em;
+}
+
+.cepFound {
+  color: #4ade80;
+}
+
+.cepNotFound {
+  color: var(--error);
+}

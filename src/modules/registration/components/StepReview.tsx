@@ -18,7 +18,7 @@ interface Props {
 }
 
 export function StepReview({ state, isSubmitting, submitError, onSubmit, onBack }: Props) {
-  const { contact, businessNew, businessMigration, selectedPlan, clientType } = state
+  const { contact, businessNew, address, businessMigration, selectedPlan, clientType } = state
 
   return (
     <div className={styles.wrapper}>
@@ -35,8 +35,8 @@ export function StepReview({ state, isSubmitting, submitError, onSubmit, onBack 
           <ReviewSection title="Contato">
             <ReviewRow label="Nome" value={contact.name} />
             <ReviewRow label="E-mail" value={contact.email} />
-            <ReviewRow label="Telefone" value={contact.phone} />
-            <ReviewRow label="CPF" value={contact.cpf} />
+            <ReviewRow label="Telefone" value={formatPhone(contact.phone)} />
+            <ReviewRow label="CPF" value={formatCpf(contact.cpf)} />
           </ReviewSection>
         )}
 
@@ -45,7 +45,15 @@ export function StepReview({ state, isSubmitting, submitError, onSubmit, onBack 
             <ReviewRow label="Tipo desejado" value={BUSINESS_TYPE_LABEL[businessNew.desiredBusinessType]} />
             <ReviewRow label="Nome desejado" value={businessNew.desiredBusinessName} />
             <ReviewRow label="Atividade" value={businessNew.mainActivity} />
-            <ReviewRow label="Localização" value={`${businessNew.city} – ${businessNew.state}`} />
+          </ReviewSection>
+        )}
+
+        {address && (
+          <ReviewSection title="Endereço">
+            <ReviewRow label="CEP" value={formatCep(address.cep)} />
+            <ReviewRow label="Logradouro" value={`${address.logradouro}, ${address.numero}${address.complemento ? ` — ${address.complemento}` : ''}`} />
+            <ReviewRow label="Bairro" value={address.bairro} />
+            <ReviewRow label="Cidade / Estado" value={`${address.city} – ${address.state}`} />
           </ReviewSection>
         )}
 
@@ -79,6 +87,24 @@ function ReviewSection({ title, children }: { title: string; children: React.Rea
       <div className={styles.rows}>{children}</div>
     </div>
   )
+}
+
+function formatPhone(p: string) {
+  const d = p.replace(/\D/g, '')
+  if (d.length === 11) return `(${d.slice(0,2)}) ${d.slice(2,7)}-${d.slice(7)}`
+  if (d.length === 10) return `(${d.slice(0,2)}) ${d.slice(2,6)}-${d.slice(6)}`
+  return p
+}
+
+function formatCpf(c: string) {
+  const d = c.replace(/\D/g, '')
+  if (d.length === 11) return `${d.slice(0,3)}.${d.slice(3,6)}.${d.slice(6,9)}-${d.slice(9)}`
+  return c
+}
+
+function formatCep(cep: string) {
+  const d = cep.replace(/\D/g, '')
+  return d.length === 8 ? `${d.slice(0, 5)}-${d.slice(5)}` : cep
 }
 
 function ReviewRow({ label, value }: { label: string; value: string }) {

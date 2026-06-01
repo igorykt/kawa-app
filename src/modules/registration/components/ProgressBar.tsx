@@ -5,6 +5,7 @@ const STEPS_NEW: { key: Step; label: string }[] = [
   { key: 'type-selector', label: 'Perfil' },
   { key: 'contact', label: 'Contato' },
   { key: 'business-new', label: 'Empresa & Plano' },
+  { key: 'address', label: 'Endereço' },
   { key: 'review', label: 'Revisão' },
 ]
 
@@ -20,6 +21,7 @@ const STEP_ORDER: Step[] = [
   'type-selector',
   'contact',
   'business-new',
+  'address',
   'business-migration',
   'plan',
   'review',

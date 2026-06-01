@@ -6,6 +6,16 @@ export type TaxRegime = 'SimplesNacional' | 'LucroPresumido' | 'LucroReal'
 
 export type Plan = 'MEI' | 'Essencial' | 'Profissional'
 
+export interface AddressData {
+  cep: string
+  logradouro: string
+  numero: string
+  complemento?: string
+  bairro: string
+  city: string
+  state: string
+}
+
 export interface NewClientFormData {
   name: string
   email: string
@@ -14,6 +24,11 @@ export interface NewClientFormData {
   desiredBusinessType: BusinessType
   desiredBusinessName: string
   mainActivity: string
+  cep: string
+  logradouro: string
+  numero: string
+  complemento?: string
+  bairro: string
   city: string
   state: string
   selectedPlan: Plan
@@ -38,6 +53,7 @@ export type Step =
   | 'type-selector'
   | 'contact'
   | 'business-new'
+  | 'address'
   | 'business-migration'
   | 'plan'
   | 'review'
@@ -47,7 +63,8 @@ export interface RegistrationState {
   step: Step
   clientType: ClientType | null
   contact: Pick<NewClientFormData, 'name' | 'email' | 'phone' | 'cpf'> | null
-  businessNew: Pick<NewClientFormData, 'desiredBusinessType' | 'desiredBusinessName' | 'mainActivity' | 'city' | 'state'> | null
+  businessNew: Pick<NewClientFormData, 'desiredBusinessType' | 'desiredBusinessName' | 'mainActivity'> | null
+  address: AddressData | null
   businessMigration: Pick<MigrationClientFormData, 'cnpj' | 'companyName' | 'currentTaxRegime' | 'currentAccountant' | 'employeeCount'> | null
   selectedPlan: Plan | null
 }
