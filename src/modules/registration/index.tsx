@@ -11,6 +11,12 @@ import { StepReview } from './components/StepReview'
 import { StepSuccess } from './components/StepSuccess'
 import styles from './Registration.module.css'
 
+const SITE_URL = import.meta.env.VITE_SITE_URL ?? 'http://localhost:5500'
+
+function goToSite() {
+  window.location.href = SITE_URL
+}
+
 export function RegistrationPage() {
   const reg = useRegistration()
   const { state } = reg
@@ -38,7 +44,7 @@ export function RegistrationPage() {
           {state.step === 'contact' && state.clientType === 'migration' && (
             <StepMigrationContact
               onSubmit={reg.submitMigrationLead}
-              onBack={reg.goToTypeSelector}
+              onBack={goToSite}
             />
           )}
 
@@ -46,7 +52,7 @@ export function RegistrationPage() {
             <StepContact
               defaultValues={state.contact}
               onSubmit={reg.saveContact}
-              onBack={() => reg.goTo('type-selector')}
+              onBack={goToSite}
             />
           )}
 
