@@ -17,6 +17,9 @@ export const registrationService = {
       currentTaxRegime: taxRegimeToInt(data.currentTaxRegime),
       cnpj: data.cnpj.replace(/\D/g, ''),
     }),
+
+  captureLead: (data: { name: string; email: string; phone: string }) =>
+    api.post('/leads', data),
 }
 
 function businessTypeToInt(type: string): number {

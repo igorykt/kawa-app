@@ -2,6 +2,7 @@ import { useRegistration } from '../../hooks/useRegistration'
 import { ProgressBar } from './components/ProgressBar'
 import { StepTypeSelector } from './components/StepTypeSelector'
 import { StepContact } from './components/StepContact'
+import { StepMigrationContact } from './components/StepMigrationContact'
 import { StepBusinessNew } from './components/StepBusinessNew'
 import { StepAddress } from './components/StepAddress'
 import { StepBusinessMigration } from './components/StepBusinessMigration'
@@ -34,7 +35,14 @@ export function RegistrationPage() {
             <StepTypeSelector onSelect={reg.selectType} />
           )}
 
-          {state.step === 'contact' && (
+          {state.step === 'contact' && state.clientType === 'migration' && (
+            <StepMigrationContact
+              onSubmit={reg.submitMigrationLead}
+              onBack={reg.goToTypeSelector}
+            />
+          )}
+
+          {state.step === 'contact' && state.clientType !== 'migration' && (
             <StepContact
               defaultValues={state.contact}
               onSubmit={reg.saveContact}

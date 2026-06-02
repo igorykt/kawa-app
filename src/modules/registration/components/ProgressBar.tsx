@@ -10,11 +10,7 @@ const STEPS_NEW: { key: Step; label: string }[] = [
 ]
 
 const STEPS_MIGRATION: { key: Step; label: string }[] = [
-  { key: 'type-selector', label: 'Perfil' },
   { key: 'contact', label: 'Contato' },
-  { key: 'business-migration', label: 'Empresa' },
-  { key: 'plan', label: 'Plano' },
-  { key: 'review', label: 'Revisão' },
 ]
 
 const STEP_ORDER: Step[] = [

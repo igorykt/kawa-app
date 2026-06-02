@@ -8,6 +8,7 @@ import type {
   RegistrationState,
   Step,
 } from '../types/registration'
+import type { MigrationContactData } from '../modules/registration/components/StepMigrationContact'
 import { registrationService } from '../services/registrationService'
 
 const VALID_PLANS: Plan[] = ['MEI', 'Essencial', 'Profissional']
@@ -44,6 +45,9 @@ export function useRegistration() {
 
   const goTo = (step: Step) => setState(s => ({ ...s, step }))
 
+  const goToTypeSelector = () =>
+    setState(s => ({ ...s, step: 'type-selector', clientType: null }))
+
   const selectType = (clientType: ClientType) => {
     setState(s => ({ ...s, clientType, step: 'contact' }))
   }
@@ -79,6 +83,19 @@ export function useRegistration() {
 
   const savePlan = (selectedPlan: Plan) => {
     setState(s => ({ ...s, selectedPlan, step: 'review' }))
+  }
+
+  const submitMigrationLead = async (data: MigrationContactData) => {
+    setIsSubmitting(true)
+    setSubmitError(null)
+    try {
+      await registrationService.captureLead(data)
+      setState(s => ({ ...s, contact: { ...data, cpf: '' }, step: 'success' }))
+    } catch {
+      setSubmitError('Erro ao enviar. Tente novamente.')
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   const submit = async () => {
@@ -131,7 +148,9 @@ export function useRegistration() {
     saveBusinessMigration,
     savePlan,
     submit,
+    submitMigrationLead,
     goTo,
+    goToTypeSelector,
     reset,
   }
 }
